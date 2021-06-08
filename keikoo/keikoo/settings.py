@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9pvo+09+um+u=plc&r^dzy!5)e50zkxc$83*vz)po#9ll*n6k6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myshop',
+    'cart',
+    'orders',
+    
 ]
 
 MIDDLEWARE = [
@@ -51,6 +55,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'keikoo.urls'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'keikoonlinestore@gmail.com'
+EMAIL_HOST_PASSWORD = 'python2021'
+EMAIL_PORT = 587
+
+#https://myaccount.google.com/lesssecureapps
+#https://accounts.google.com/DisplayUnlockCaptcha
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -62,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.content_processors.cart',
             ],
         },
     },
@@ -119,7 +133,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/ 'media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CART_SESSION_ID = 'cart'
+
+#how to get choco running
+#@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
