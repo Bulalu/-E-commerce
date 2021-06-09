@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'myshop',
     'cart',
     'orders',
+    'payment',
     
 ]
 
@@ -145,3 +146,17 @@ CART_SESSION_ID = 'cart'
 
 #how to get choco running
 #@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+
+#braintree settings
+BRAINTREE_MERCHANT_ID = '4nrx95b4m6h2wd89'
+BRAINTREE_PUBLIC_KEY = '7mr4fjdtvzfnj36r'
+BRAINTREE_PRIVATE_KEY = 'd87434ce3bb48aaa6469e9f291fdbaa8'
+
+import braintree
+
+BRAINTREE_CONF = braintree.Configuration(
+        braintree.Environment.Sandbox,
+        BRAINTREE_MERCHANT_ID,
+        BRAINTREE_PUBLIC_KEY,
+        BRAINTREE_PRIVATE_KEY
+)
