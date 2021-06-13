@@ -18,16 +18,20 @@ from django.urls import path
 from django.urls.conf import include
 from django.conf.urls.static import static
 from django.conf import settings
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('cart/', include('cart.urls', namespace='cart')),
-    path('payment/', include('payment.urls', namespace='payment')),
-    path('coupons/', include('coupons.urls', namespace='coupons')),
+from django.utils.translation import gettext_lazy as _
+from django.conf.urls.i18n import i18n_patterns
+urlpatterns = i18n_patterns(
+    path(_('admin/'), admin.site.urls),
+    path(_('cart/'), include('cart.urls', namespace='cart')),
+    path(_('orders/'), include('orders.urls', namespace='orders')),
+    path(_('payment/'), include('payment.urls', namespace='payment')),
+    path(_('coupons/'), include('coupons.urls', namespace='coupons')),
+    path('rosetta/', include('rosetta.urls')),
     path('', include('myshop.urls', namespace='shop')),
-    path('orders/', include('orders.urls', namespace='orders'))
+    )
     
-]
+    
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

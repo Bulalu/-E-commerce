@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rosetta',
+    'parler',
+    'localflavor',
     'myshop',
     'cart',
     'orders',
@@ -46,13 +49,18 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+
+    
 ]
 
 ROOT_URLCONF = 'keikoo.urls'
@@ -119,9 +127,32 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+from django.utils.translation import gettext_lazy as _
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'en'
+
+
+LANGUAGES =(
+     ('en', _('English')),
+     ('es', _('Spanish'))
+)
+
+LOCALE_PATHS = (
+        (BASE_DIR/ 'locale',)
+        )
+
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'en'},
+        {'code': 'es'},
+    ),
+    'default':{
+        'fallback': 'en',
+        'hide_untranslated': False,
+
+    }
+}
+TIME_ZONE = 'UTC' 
 
 USE_I18N = True
 
