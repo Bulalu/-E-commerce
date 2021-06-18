@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9pvo+09+um+u=plc&r^dzy!5)e50zkxc$83*vz)po#9ll*n6k6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,20 +37,43 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rosetta',
+    'parler',
+    'localflavor',
+    'myshop',
+    'cart',
+    'orders',
+    'payment',
+    'coupons',
+    
 ]
 
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+
+    
 ]
 
 ROOT_URLCONF = 'keikoo.urls'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'keikoonlinestore@gmail.com'
+EMAIL_HOST_PASSWORD = 'python2021'
+EMAIL_PORT = 587
+
+#https://myaccount.google.com/lesssecureapps
+#https://accounts.google.com/DisplayUnlockCaptcha
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -62,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.content_processors.cart',
             ],
         },
     },
@@ -103,9 +127,32 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+from django.utils.translation import gettext_lazy as _
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'en'
+
+
+LANGUAGES =(
+     ('en', _('English')),
+     ('es', _('Spanish'))
+)
+
+LOCALE_PATHS = (
+        (BASE_DIR/ 'locale',)
+        )
+
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'en'},
+        {'code': 'es'},
+    ),
+    'default':{
+        'fallback': 'en',
+        'hide_untranslated': False,
+
+    }
+}
+TIME_ZONE = 'UTC' 
 
 USE_I18N = True
 
@@ -118,8 +165,36 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR/ 'static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/ 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CART_SESSION_ID = 'cart'
+
+#how to get choco running
+#@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+
+#braintree settings
+BRAINTREE_MERCHANT_ID = '4nrx95b4m6h2wd89'
+BRAINTREE_PUBLIC_KEY = '7mr4fjdtvzfnj36r'
+BRAINTREE_PRIVATE_KEY = 'd87434ce3bb48aaa6469e9f291fdbaa8'
+
+import braintree
+
+BRAINTREE_CONF = braintree.Configuration(
+        braintree.Environment.Sandbox,
+        BRAINTREE_MERCHANT_ID,
+        BRAINTREE_PUBLIC_KEY,
+        BRAINTREE_PRIVATE_KEY
+)
+
+#redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
